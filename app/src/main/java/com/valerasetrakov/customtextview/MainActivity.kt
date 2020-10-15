@@ -10,8 +10,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val annotation = DoubleRendererDelegate.createAnnotation()
-        val someText = SpannableStringBuilder.valueOf("Some text")
-        someText.setSpanInclusiveEnd(annotation, 0, 2)
+        val someText = SpannableStringBuilder.valueOf("Some text\nSome text 2")
+        someText.setSpanInclusiveEnd(annotation, 0, 13)
         text_view.addRendererDelegate(MarkedRendererDelegate(context = this))
         text_view.addRendererDelegate(DoubleRendererDelegate(context = this))
 

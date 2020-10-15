@@ -10,6 +10,10 @@ import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.graphics.withTranslation
 
+/**
+ * Custom [AppCompatTextView] that supported custom [Annotation] for multiline, singleline background
+ * text
+ */
 open class RendererTextView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = android.R.attr.textViewStyle
 ) : AppCompatTextView(context, attrs, defStyleAttr) {
@@ -98,6 +102,9 @@ open class RendererTextView @JvmOverloads constructor(
 
 }
 
+/**
+ * Compositor for [RendererDelegate]
+ */
 class RendererDelegateManager(private val renderDelegates: MutableList<RendererDelegate> = mutableListOf()) {
 
     fun addDelegates(delegates: List<RendererDelegate>) {
@@ -118,6 +125,9 @@ class RendererDelegateManager(private val renderDelegates: MutableList<RendererD
 
 interface RendererDelegate: Renderer, AnnotationDelegate
 
+/**
+ * Class for rendering background for [AppCompatTextView]
+ */
 interface Renderer {
     /**
      * Draw the background that starts at the {@code startOffset} and ends at {@code endOffset}.
