@@ -2,14 +2,21 @@ package com.valerasetrakov.customtextview
 
 import android.content.Context
 import android.graphics.Canvas
-import android.graphics.ColorFilter
 import android.graphics.drawable.Drawable
-import android.graphics.drawable.PaintDrawable
 import android.os.Build
 import android.text.Annotation
 import android.text.Layout
 import android.text.Spannable
-import androidx.core.content.res.ResourcesCompat
+import com.valerasetrakov.customtextview.example.drawable.doubledrawable.DoubleDrawable
+import com.valerasetrakov.customtextview.example.drawable.round.implementation.fail.LeftFailDrawable
+import com.valerasetrakov.customtextview.example.drawable.round.implementation.marked.LeftMarkedDrawable
+import com.valerasetrakov.customtextview.example.drawable.round.implementation.marked.MarkedDrawable
+import com.valerasetrakov.customtextview.example.drawable.round.implementation.marked.MiddleMarkedDrawable
+import com.valerasetrakov.customtextview.example.drawable.round.implementation.marked.RightMarkedDrawable
+import com.valerasetrakov.customtextview.example.drawable.round.implementation.fail.FailDrawable
+import com.valerasetrakov.customtextview.example.drawable.round.implementation.fail.MiddleFailDrawable
+import com.valerasetrakov.customtextview.example.drawable.round.implementation.fail.RightFailDrawable
+import com.valerasetrakov.lib.Renderer
 import kotlin.math.max
 import kotlin.math.min
 
@@ -38,36 +45,6 @@ class MarkedRendererDelegate(singleRenderer: MarkedSingleLineRenderer, multiLine
 
 class MarkedSingleLineRenderer(horizontalPadding: Int, verticalPadding: Int, context: Context) :
     SingleLineRenderer(horizontalPadding, verticalPadding, MarkedDrawable(context))
-
-class MarkedDrawable(context: Context) :
-    BaseMarkedDrawable(context,
-        R.dimen.rounded_of_background_of_lesson_span,
-        R.dimen.rounded_of_background_of_lesson_span,
-        R.dimen.rounded_of_background_of_lesson_span,
-        R.dimen.rounded_of_background_of_lesson_span)
-
-open class BaseMarkedDrawable(context: Context, leftTopRoundId: Int, rightTopRoundId: Int, rightBottomRoundId: Int, leftBottomRoundId: Int):
-    BaseRoundedShapeDrawable(context, R.color.colorOfMarkedPhrase, leftTopRoundId, rightTopRoundId, rightBottomRoundId, leftBottomRoundId)
-
-open class BaseRoundedShapeDrawable(context: Context, colorId: Int, leftTopRoundId: Int, rightTopRoundId: Int, rightBottomRoundId: Int, leftBottomRoundId: Int):
-    PaintDrawable(ResourcesCompat.getColor(context.resources, colorId, context.theme)) {
-
-    private val leftTopRound = context.resources.getDimension(leftTopRoundId)
-    private val rightTopRound = context.resources.getDimension(rightTopRoundId)
-    private val rightBottomRound = context.resources.getDimension(rightBottomRoundId)
-    private val leftBottomRound = context.resources.getDimension(leftBottomRoundId)
-
-    private val rounds = floatArrayOf(
-        leftTopRound, leftTopRound,
-        rightTopRound, rightTopRound,
-        rightBottomRound, rightBottomRound,
-        leftBottomRound, leftBottomRound
-    )
-
-    init {
-        setCornerRadii(rounds)
-    }
-}
 
 class MarkedMultiLineRenderer(
     horizontalPadding: Int,
@@ -211,78 +188,6 @@ abstract class TextRoundedBgRenderer(
     }
 }
 
-// Extension functions for Layout object
-
-/**
- * Android system default line spacing extra
- */
-private const val DEFAULT_LINESPACING_EXTRA = 0f
-
-/**
- * Android system default line spacing multiplier
- */
-private const val DEFAULT_LINESPACING_MULTIPLIER = 1f
-
-/**
- * Get the line bottom discarding the line spacing added.
- */
-fun Layout.getLineBottomWithoutSpacing(line: Int): Int {
-    val lineBottom = getLineBottom(line)
-    val lastLineSpacingNotAdded = Build.VERSION.SDK_INT >= 19
-    val isLastLine = line == lineCount - 1
-
-    val lineBottomWithoutSpacing: Int
-    val lineSpacingExtra = spacingAdd
-    val lineSpacingMultiplier = spacingMultiplier
-    val hasLineSpacing = lineSpacingExtra != DEFAULT_LINESPACING_EXTRA
-            || lineSpacingMultiplier != DEFAULT_LINESPACING_MULTIPLIER
-
-    if (!hasLineSpacing || isLastLine && lastLineSpacingNotAdded) {
-        lineBottomWithoutSpacing = lineBottom
-    } else {
-        val extra: Float
-        if (lineSpacingMultiplier.compareTo(DEFAULT_LINESPACING_MULTIPLIER) != 0) {
-            val lineHeight = getLineHeight(line)
-            extra = lineHeight - (lineHeight - lineSpacingExtra) / lineSpacingMultiplier
-        } else {
-            extra = lineSpacingExtra
-        }
-
-        lineBottomWithoutSpacing = (lineBottom - extra).toInt()
-    }
-
-    return lineBottomWithoutSpacing
-}
-
-/**
- * Get the line height of a line.
- */
-fun Layout.getLineHeight(line: Int): Int {
-    return getLineTop(line + 1) - getLineTop(line)
-}
-
-/**
- * Returns the top of the Layout after removing the extra padding applied by  the Layout.
- */
-fun Layout.getLineTopWithoutPadding(line: Int): Int {
-    var lineTop = getLineTop(line)
-    if (line == 0) {
-        lineTop -= topPadding
-    }
-    return lineTop
-}
-
-/**
- * Returns the bottom of the Layout after removing the extra padding applied by the Layout.
- */
-fun Layout.getLineBottomWithoutPadding(line: Int): Int {
-    var lineBottom = getLineBottomWithoutSpacing(line)
-    if (line == lineCount - 1) {
-        lineBottom -= bottomPadding
-    }
-    return lineBottom
-}
-
 abstract class StyleRendererDelegate(singleRenderer: SingleLineRenderer, multiLineRenderer: MultiLineRenderer) :
     BaseRendererDelegate(singleRenderer, multiLineRenderer) {
 
@@ -330,41 +235,12 @@ open class SingleLineRenderer(
 }
 
 abstract class BaseRendererDelegate(val singleRenderer: SingleLineRenderer, val multiLineRenderer: MultiLineRenderer)
-    : RendererDelegate {
+    : com.valerasetrakov.lib.RendererDelegate {
 
     override fun draw(canvas: Canvas, layout: Layout, startLine: Int, endLine: Int, startOffset: Int, endOffset: Int) {
         val renderer = if (startLine == endLine) singleRenderer else multiLineRenderer
         renderer.draw(canvas, layout, startLine, endLine, startOffset, endOffset)
     }
-}
-
-class LeftMarkedDrawable(context: Context): BaseMarkedDrawable(context,
-    R.dimen.rounded_of_background_of_lesson_span,
-    R.dimen.zero_rounded_of_background_of_lesson_span,
-    R.dimen.zero_rounded_of_background_of_lesson_span,
-    R.dimen.rounded_of_background_of_lesson_span)
-
-class MiddleMarkedDrawable(context: Context):
-    BaseMarkedDrawable(context,
-        R.dimen.zero_rounded_of_background_of_lesson_span,
-        R.dimen.zero_rounded_of_background_of_lesson_span,
-        R.dimen.zero_rounded_of_background_of_lesson_span,
-        R.dimen.zero_rounded_of_background_of_lesson_span)
-
-class RightMarkedDrawable(context: Context):
-    BaseMarkedDrawable(context,
-        R.dimen.zero_rounded_of_background_of_lesson_span,
-        R.dimen.rounded_of_background_of_lesson_span,
-        R.dimen.rounded_of_background_of_lesson_span,
-        R.dimen.zero_rounded_of_background_of_lesson_span
-    )
-
-fun Spannable.setSpanInclusiveEnd(what: Any, start: Int, end: Int) {
-    setSpan(what, start, end + 1)
-}
-
-fun Spannable.setSpan(what: Any, start: Int, end: Int) {
-    setSpan(what, start, end, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
 }
 
 class DoubleRendererDelegate(singleRenderer: DoubleSingleLineRenderer, multiLineRenderer: DoubleMultiLineRenderer) :
@@ -393,40 +269,6 @@ class DoubleRendererDelegate(singleRenderer: DoubleSingleLineRenderer, multiLine
 class DoubleSingleLineRenderer(horizontalPadding: Int, verticalPadding: Int, context: Context) :
     SingleLineRenderer(horizontalPadding, verticalPadding, DoubleDrawable(FailDrawable(context), MarkedDrawable(context)))
 
-class DoubleDrawable(private val firstDrawable: Drawable, private val secondDrawable: Drawable): Drawable() {
-
-
-    override fun setBounds(left: Int, top: Int, right: Int, bottom: Int) {
-        super.setBounds(left, top, right, bottom)
-        val leftFailDrawable = left + 4
-        val topFailDrawable = top - 4
-        val rightFailDrawable = right + 4
-        val bottomFailDrawable = bottom - 4
-        firstDrawable.setBounds(leftFailDrawable, topFailDrawable, rightFailDrawable, bottomFailDrawable)
-
-        secondDrawable.setBounds(left, top, right, bottom)
-    }
-
-    override fun draw(canvas: Canvas) {
-        firstDrawable.draw(canvas)
-        secondDrawable.draw(canvas)
-    }
-
-    override fun setAlpha(alpha: Int) {
-        firstDrawable.alpha = alpha
-        secondDrawable.alpha = alpha
-    }
-
-    override fun getOpacity(): Int {
-        return firstDrawable.opacity
-    }
-
-    override fun setColorFilter(colorFilter: ColorFilter?) {
-        firstDrawable.colorFilter = colorFilter
-        secondDrawable.colorFilter = colorFilter
-    }
-}
-
 class DoubleMultiLineRenderer(
     horizontalPadding: Int,
     verticalPadding: Int,
@@ -434,34 +276,6 @@ class DoubleMultiLineRenderer(
 ) : MultiLineRenderer(horizontalPadding, verticalPadding,
     DoubleDrawable(LeftFailDrawable(context), LeftMarkedDrawable(context)),
     DoubleDrawable(MiddleFailDrawable(context), MiddleMarkedDrawable(context)),
-    DoubleDrawable(RightFailDrawable(context), RightMarkedDrawable(context)))
-
-class LeftFailDrawable(context: Context):
-    BaseFailDrawable(context,
-        R.dimen.rounded_of_background_of_lesson_span,
-        R.dimen.zero_rounded_of_background_of_lesson_span,
-        R.dimen.rounded_of_background_of_lesson_span,
-        R.dimen.zero_rounded_of_background_of_lesson_span)
-
-open class BaseFailDrawable(context: Context, leftRoundId: Int, topRoundId: Int, rightRoundId: Int, bottomRoundId: Int):
-    BaseRoundedShapeDrawable(context, R.color.colorOfFailedPhrase, leftRoundId, topRoundId, rightRoundId, bottomRoundId)
-
-class FailDrawable(context: Context) :
-    BaseFailDrawable(context,
-        R.dimen.rounded_of_background_of_lesson_span,
-        R.dimen.rounded_of_background_of_lesson_span,
-        R.dimen.rounded_of_background_of_lesson_span,
-        R.dimen.rounded_of_background_of_lesson_span)
-
-class MiddleFailDrawable(context: Context): BaseFailDrawable(context,
-    R.dimen.zero_rounded_of_background_of_lesson_span,
-    R.dimen.zero_rounded_of_background_of_lesson_span,
-    R.dimen.zero_rounded_of_background_of_lesson_span,
-    R.dimen.zero_rounded_of_background_of_lesson_span)
-
-class RightFailDrawable(context: Context): BaseFailDrawable(context,
-    R.dimen.zero_rounded_of_background_of_lesson_span,
-    R.dimen.rounded_of_background_of_lesson_span,
-    R.dimen.rounded_of_background_of_lesson_span,
-    R.dimen.zero_rounded_of_background_of_lesson_span
+    DoubleDrawable(RightFailDrawable(context), RightMarkedDrawable(context))
 )
+

@@ -1,5 +1,6 @@
 package com.valerasetrakov.customtextview
 
+import android.text.Spannable
 import timber.log.Timber
 
 val Any.tag get(): String {
@@ -20,4 +21,12 @@ fun Any.logd(message: String, tag: String = this.tag) {
 fun Any.loge(message: String = "", error: Throwable, tag: String = this.tag) {
     val TAG = tag
     Timber.tag(TAG).e(error, message)
+}
+
+fun Spannable.setSpanInclusiveEnd(what: Any, start: Int, end: Int) {
+    setSpan(what, start, end + 1)
+}
+
+fun Spannable.setSpan(what: Any, start: Int, end: Int) {
+    setSpan(what, start, end, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
 }

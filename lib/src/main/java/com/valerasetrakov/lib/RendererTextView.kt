@@ -1,4 +1,4 @@
-package com.valerasetrakov.customtextview
+package com.valerasetrakov.lib
 
 import android.content.Context
 import android.graphics.Canvas
@@ -102,53 +102,3 @@ open class RendererTextView @JvmOverloads constructor(
 
 }
 
-/**
- * Compositor for [RendererDelegate]
- */
-class RendererDelegateManager(private val renderDelegates: MutableList<RendererDelegate> = mutableListOf()) {
-
-    fun addDelegates(delegates: List<RendererDelegate>) {
-        renderDelegates.addAll(delegates)
-    }
-
-    fun addDelegate(delegate: RendererDelegate) {
-        renderDelegates.add(delegate)
-    }
-
-    fun draw(annotation: Annotation, canvas: Canvas, layout: Layout, text: Spanned,
-             startLine: Int, endLine: Int, startOffset: Int, endOffset: Int) {
-        val annotationFlags = text.getSpanFlags(annotation)
-        val validRenderDelegates = renderDelegates.filter { it.isValidAnnotation(annotation, annotationFlags) }
-        validRenderDelegates.forEach { it.draw(canvas, layout, startLine, endLine, startOffset, endOffset) }
-    }
-}
-
-interface RendererDelegate: Renderer, AnnotationDelegate
-
-/**
- * Class for rendering background for [AppCompatTextView]
- */
-interface Renderer {
-    /**
-     * Draw the background that starts at the {@code startOffset} and ends at {@code endOffset}.
-     *
-     * @param canvas Canvas to draw onto
-     * @param layout Layout that contains the text
-     * @param startLine the start line for the background
-     * @param endLine the end line for the background
-     * @param startOffset the character offset that the background should start at
-     * @param endOffset the character offset that the background should end at
-     */
-    fun draw(
-        canvas: Canvas,
-        layout: Layout,
-        startLine: Int,
-        endLine: Int,
-        startOffset: Int,
-        endOffset: Int
-    )
-}
-
-interface AnnotationDelegate {
-    fun isValidAnnotation(annotation: Annotation, flags: Int): Boolean
-}
