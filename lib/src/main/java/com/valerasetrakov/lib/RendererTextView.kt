@@ -22,11 +22,11 @@ open class RendererTextView @JvmOverloads constructor(
 
     private val rendererDelegateManager = RendererDelegateManager()
 
-    protected val annotations: Array<Annotation>
+    private val annotations: Array<Annotation>
         get() = spannableText.getSpans(0, text.length, Annotation::class.java)
 
-    protected val spannableText: Spannable
-        get() = text as Spannable
+    private val spannableText: Spanned
+        get() = text as Spanned
 
     fun addRendererDelegates(delegates: List<RendererDelegate>) {
         rendererDelegateManager.addDelegates(delegates)

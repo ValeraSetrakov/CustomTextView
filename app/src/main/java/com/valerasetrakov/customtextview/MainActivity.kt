@@ -1,8 +1,10 @@
 package com.valerasetrakov.customtextview
 
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.SpannableStringBuilder
+import android.text.style.ForegroundColorSpan
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -14,7 +16,8 @@ class MainActivity : AppCompatActivity() {
         someText.setSpanInclusiveEnd(annotation, 0, 13)
         text_view.addRendererDelegate(MarkedRendererDelegate(context = this))
         text_view.addRendererDelegate(DoubleRendererDelegate(context = this))
-
-        text_view.setRendererText(someText)
+        val standardSpan = ForegroundColorSpan(Color.BLUE)
+        someText.setSpanInclusiveEnd(standardSpan, 0, 5)
+        text_view.setText(someText)
     }
 }

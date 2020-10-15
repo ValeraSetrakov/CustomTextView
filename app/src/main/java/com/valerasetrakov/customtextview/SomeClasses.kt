@@ -253,7 +253,7 @@ class DoubleRendererDelegate(singleRenderer: DoubleSingleLineRenderer, multiLine
     companion object {
         const val MARKED_FAILED_VALUE = "MARKED_FAILED_VALUE"
         fun createAnnotation() =
-            Annotation(StyleRendererDelegate.STYLE_ANNOTATION_KEY, MARKED_FAILED_VALUE)
+            Annotation(STYLE_ANNOTATION_KEY, MARKED_FAILED_VALUE)
     }
 
     override fun isValidAnnotation(annotation: Annotation, flags: Int): Boolean {
