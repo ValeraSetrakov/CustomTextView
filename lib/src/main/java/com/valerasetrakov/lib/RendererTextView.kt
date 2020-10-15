@@ -89,11 +89,10 @@ open class RendererTextView @JvmOverloads constructor(
         )
     }
 
-    fun setRendererText(text: CharSequence) {
-        setText(text, BufferType.SPANNABLE)
-    }
-
-    data class BackgroundAnnotationMeasure (
+    /**
+     * Holder for text measure data, only for internal using by [RendererTextView]
+     */
+    private data class BackgroundAnnotationMeasure (
         val startLine: Int,
         val endLine: Int,
         val startOffset: Int,
