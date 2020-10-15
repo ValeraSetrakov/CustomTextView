@@ -3,10 +3,8 @@ package com.valerasetrakov.customtextview
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable
-import android.os.Build
 import android.text.Annotation
 import android.text.Layout
-import android.text.Spannable
 import com.valerasetrakov.customtextview.example.drawable.doubledrawable.DoubleDrawable
 import com.valerasetrakov.customtextview.example.drawable.round.implementation.fail.LeftFailDrawable
 import com.valerasetrakov.customtextview.example.drawable.round.implementation.marked.LeftMarkedDrawable
@@ -67,7 +65,7 @@ open class MultiLineRenderer(
     var drawableLeft: Drawable,
     var drawableMid: Drawable,
     var drawableRight: Drawable
-) : TextRoundedBgRenderer(horizontalPadding, verticalPadding) {
+) : BaseTextBgRenderer(horizontalPadding, verticalPadding) {
 
     override fun draw(
         canvas: Canvas,
@@ -160,7 +158,7 @@ open class MultiLineRenderer(
  * @param horizontalPadding the padding to be applied to left & right of the background
  * @param verticalPadding the padding to be applied to top & bottom of the background
  */
-abstract class TextRoundedBgRenderer(
+abstract class BaseTextBgRenderer(
     val horizontalPadding: Int,
     val verticalPadding: Int
 ) : Renderer {
@@ -213,7 +211,7 @@ open class SingleLineRenderer(
     horizontalPadding: Int,
     verticalPadding: Int,
     var drawable: Drawable
-) : TextRoundedBgRenderer(horizontalPadding, verticalPadding) {
+) : BaseTextBgRenderer(horizontalPadding, verticalPadding) {
 
     override fun draw(
         canvas: Canvas,
