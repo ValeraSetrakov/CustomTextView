@@ -89,10 +89,6 @@ open class RendererTextView @JvmOverloads constructor(
         setText(text, BufferType.SPANNABLE)
     }
 
-    override fun setText(text: CharSequence?, type: BufferType?) {
-        error(UnsupportedOperationException("Use setRendererText method"))
-    }
-
     data class BackgroundAnnotationMeasure (
         val startLine: Int,
         val endLine: Int,
