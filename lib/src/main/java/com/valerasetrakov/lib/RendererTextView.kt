@@ -59,12 +59,7 @@ open class RendererTextView @JvmOverloads constructor(
     /** Determine type of annotation and draw it */
     private fun drawAnnotation(annotation: Annotation, canvas: Canvas, text: Spanned, layout: Layout) {
         val annotationMeasure = measureAnnotation(annotation, text, layout)
-
-        val startLine = annotationMeasure.startLine
-        val endLine = annotationMeasure.endLine
-        val startOffset = annotationMeasure.startOffset
-        val endOffset = annotationMeasure.endOffset
-
+        val (startLine, endLine, startOffset, endOffset) = annotationMeasure
         rendererDelegateManager.draw(annotation, canvas, layout, text, startLine, endLine, startOffset, endOffset)
     }
 
