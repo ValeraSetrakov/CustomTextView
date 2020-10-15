@@ -1,0 +1,41 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="nav_header_vertical_spacing">8dp</dimen>
+    <dimen name="nav_header_height">176dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="toolbar_home_icon_start_padding">16dp</dimen>
+    <dimen name="offset">16dp</dimen>
+    <dimen name="screen_offset">@dimen/offset</dimen>
+    <dimen name="social_button_width">60dp</dimen>
+    <dimen name="video_peek_height">100dp</dimen>
+
+    <dimen name="radius_default">4dp</dimen>
+    <dimen name="padding_default">4dp</dimen>
+    <dimen name="width_stroke_default">4dp</dimen>
+
+    <dimen name="radius_grey_button">@dimen/radius_default</dimen>
+    <dimen name="padding_grey_button">@dimen/padding_default</dimen>
+
+    <dimen name="radius_corner_of_word_test_answer">@dimen/radius_default</dimen>
+    <dimen name="width_stroke_of_word_test_answer">@dimen/width_stroke_default</dimen>
+    <dimen name="width_stroke_of_word_test_progress">@dimen/width_stroke_default</dimen>
+    <dimen name="padding_of_word_test_answer">@dimen/padding_default</dimen>
+
+    <dimen name="width_stroke_button">2dp</dimen>
+    <dimen name="radius_button">@dimen/radius_default</dimen>
+
+    <dimen name="text_icon_size">14dp</dimen>
+
+    <dimen name="roundedTextBorderRadius">4dp</dimen>
+    <dimen name="roundedTextBorderWidth">1dp</dimen>
+    <dimen name="span_offset">2dp</dimen>
+    <dimen name="span_padding">2dp</dimen>
+    <dimen name="underline_width">2dp</dimen>
+    <dimen name="rounded_of_background_of_lesson_span">2dp</dimen>
+    <dimen name="zero_rounded_of_background_of_lesson_span">0dp</dimen>
+
+    <dimen name="chart_text_size">14sp</dimen>
+</resources>

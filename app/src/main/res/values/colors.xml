@@ -3,4 +3,8 @@
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
+    <color name="colorYellow1">#FFEE80</color>
+    <color name="colorOfMarkedPhrase">@color/colorYellow1</color>
+    <color name="colorDarkGrey6">#C6C6C6</color>
+    <color name="colorOfFailedPhrase">@color/colorDarkGrey6</color>
 </resources>
