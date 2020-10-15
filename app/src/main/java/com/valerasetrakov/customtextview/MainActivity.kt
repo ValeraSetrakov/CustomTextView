@@ -7,6 +7,8 @@ import android.text.Annotation
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
 import androidx.appcompat.app.AppCompatActivity
+import com.valerasetrakov.lib.renderer.MultiLineRenderer
+import com.valerasetrakov.lib.renderer.SingleLineRenderer
 import kotlinx.android.synthetic.main.activity_main.*
 
 

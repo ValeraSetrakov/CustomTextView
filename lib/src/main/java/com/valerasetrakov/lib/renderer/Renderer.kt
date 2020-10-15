@@ -1,4 +1,4 @@
-package com.valerasetrakov.lib
+package com.valerasetrakov.lib.renderer
 
 import android.graphics.Canvas
 import android.text.Layout

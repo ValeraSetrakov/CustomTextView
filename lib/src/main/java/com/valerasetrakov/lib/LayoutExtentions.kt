@@ -1,4 +1,4 @@
-package com.valerasetrakov.customtextview
+package com.valerasetrakov.lib
 
 import android.os.Build
 import android.text.Layout
